@@ -58,10 +58,12 @@ final class TreeViewPresenter {
         if !appliedSource.filter({
             $0.levelId == selectedLevelId &&
             $0.groupId > selectedGroupId &&
-            $0.rowId == selectedId
+            ($0.groupId - selectedGroupId > 1 ? $0.rowId >= selectedId : $0.rowId == selectedId)
         }).isEmpty {
             appliedSource.removeAll {
-                $0.levelId == selectedLevelId && $0.groupId > selectedGroupId && $0.rowId == selectedId
+                $0.levelId == selectedLevelId &&
+                $0.groupId > selectedGroupId &&
+                ($0.groupId - selectedGroupId > 1 ? $0.rowId >= selectedId : $0.rowId == selectedId)
             }
         } else {
             appliedSource.insert(
