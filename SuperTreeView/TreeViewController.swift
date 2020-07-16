@@ -117,13 +117,12 @@ extension TreeViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: "\(TreeViewCell.self)",
-            for: indexPath) as? TreeViewCell else { return .init() }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "\(TreeViewCell.self)", for: indexPath)
+        guard let treeViewCell = cell as? TreeViewCell else { return cell }
         
-        cell.model = source[indexPath.row]
+        treeViewCell.model = source[indexPath.row]
         
-        return cell
+        return treeViewCell
     }
 }
 
