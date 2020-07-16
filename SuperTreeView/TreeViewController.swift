@@ -73,7 +73,9 @@ final class TreeViewController: UIViewController {
         didSet {
             // MARK: disable animation
             //tableView.reloadSections([0], with: .fade)
-            tableView.reloadData()
+            UIView.performWithoutAnimation {
+                tableView.reloadData()
+            }
         }
     }
     
