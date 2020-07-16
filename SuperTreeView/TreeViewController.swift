@@ -67,8 +67,8 @@ final class TreeViewController: UIViewController {
     }
     
     private weak var delegate: TreeViewControllerProtocol?
-    
     private lazy var presenter = TreeViewPresenter(delegate: self)
+    
     private var source: [TreeViewPresenter.Model] = [] {
         didSet {
             // MARK: disable animation
