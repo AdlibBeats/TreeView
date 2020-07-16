@@ -20,26 +20,28 @@ final class TreeViewPresenter {
     }
     
     private let allSource: [Model] = [
-        .init(levelId: 1, groupId: 1, id: 1),
-        .init(levelId: 1, groupId: 2, id: 1),
-        .init(levelId: 1, groupId: 3, id: 1),
-        .init(levelId: 1, groupId: 3, id: 2),
-        .init(levelId: 1, groupId: 3, id: 3),
-        .init(levelId: 1, groupId: 2, id: 2),
-        .init(levelId: 1, groupId: 2, id: 3),
-        .init(levelId: 2, groupId: 1, id: 2),
-        .init(levelId: 3, groupId: 1, id: 3)
+        .init(levelId: 1, groupId: 1, rowId: 1, id: 1),
+        .init(levelId: 1, groupId: 2, rowId: 1, id: 2),
+        .init(levelId: 1, groupId: 3, rowId: 2, id: 3),
+        .init(levelId: 1, groupId: 3, rowId: 2, id: 4),
+        .init(levelId: 1, groupId: 3, rowId: 2, id: 5),
+        .init(levelId: 1, groupId: 2, rowId: 1, id: 3),
+        .init(levelId: 1, groupId: 2, rowId: 1, id: 4),
+        .init(levelId: 2, groupId: 1, rowId: 1, id: 2),
+        .init(levelId: 3, groupId: 1, rowId: 1, id: 3)
     ]
     
-    private var appliedSource: [Model] = (0..<5).map({ .init(levelId: $0 + 1, groupId: 1, id: $0 + 1) }) {
+    private var appliedSource: [Model] = (0..<5).enumerated().map(
+        { .init(levelId: $1 + 1, groupId: 1, rowId: 1, id: $1 + 1) }
+    ) {
         didSet {
             delegate?.sourceDidUpdate(appliedSource)
         }
     }
     
-    private func makeModelsAt(levelId: Int, groupId: Int, count: Int) -> [Model] {
-        (0..<count).map {
-            .init(levelId: levelId, groupId: groupId, id: $0 + 1)
+    private func makeModelsAt(levelId: Int, groupId: Int, rowId: Int, id: Int, count: Int) -> [Model] {
+        return (id..<(id + count)).enumerated().map {
+            return .init(levelId: levelId, groupId: groupId, rowId: rowId, id: $1)
         }
     }
     
@@ -48,22 +50,26 @@ final class TreeViewPresenter {
             indexPath.row >= 0 &&
             appliedSource.count > indexPath.row else { return }
         
-        let selectedLevelId = appliedSource[indexPath.row].levelId
-        let selectedGroupId = appliedSource[indexPath.row].groupId
+        let selectedAppliedSource = appliedSource[indexPath.row]
+        let selectedLevelId = selectedAppliedSource.levelId
+        let selectedGroupId = selectedAppliedSource.groupId
+        let selectedId = selectedAppliedSource.id
         
         if !appliedSource.filter({
             $0.levelId == selectedLevelId &&
-            $0.groupId > selectedGroupId
+            $0.groupId > selectedGroupId &&
+            $0.rowId == selectedId
         }).isEmpty {
             appliedSource.removeAll {
-                $0.levelId == selectedLevelId &&
-                $0.groupId > selectedGroupId
+                $0.levelId == selectedLevelId && $0.groupId > selectedGroupId && $0.rowId == selectedId
             }
         } else {
             appliedSource.insert(
                 contentsOf: makeModelsAt(
                     levelId: selectedLevelId,
                     groupId: selectedGroupId + 1,
+                    rowId: selectedId,
+                    id: selectedId + 1,
                     count: 3),
                 at: indexPath.row + 1
             )
@@ -81,9 +87,10 @@ extension TreeViewPresenter {
     struct Model {
         let levelId: Int
         let groupId: Int
+        let rowId: Int
         let id: Int
         var title: String {
-            "Неизвестно levelId: \(levelId) groupId: \(groupId), id: \(id)"
+            "levelId: \(levelId) groupId: \(groupId), rowId: \(rowId) id: \(id)"
         }
     }
 }
