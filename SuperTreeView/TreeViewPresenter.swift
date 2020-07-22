@@ -19,29 +19,15 @@ final class TreeViewPresenter {
         self.delegate = delegate
     }
     
-    private let allSource: [Model] = [
-        .init(levelId: 1, groupId: 1, rowId: 1, id: 1),
-        .init(levelId: 1, groupId: 2, rowId: 1, id: 2),
-        .init(levelId: 1, groupId: 3, rowId: 2, id: 3),
-        .init(levelId: 1, groupId: 3, rowId: 2, id: 4),
-        .init(levelId: 1, groupId: 3, rowId: 2, id: 5),
-        .init(levelId: 1, groupId: 2, rowId: 1, id: 3),
-        .init(levelId: 1, groupId: 2, rowId: 1, id: 4),
-        .init(levelId: 2, groupId: 1, rowId: 1, id: 2),
-        .init(levelId: 3, groupId: 1, rowId: 1, id: 3)
-    ]
-    
-    private var appliedSource: [Model] = (0..<5).enumerated().map(
-        { .init(levelId: $1 + 1, groupId: 1, rowId: 1, id: $1 + 1) }
-    ) {
+    private var appliedSource: [Model] = (0..<5).enumerated().map({ .init(id: $1 + 11, levelId: 1, foreignIds: [0]) }) {
         didSet {
             delegate?.sourceDidUpdate(appliedSource)
         }
     }
     
-    private func makeModelsAt(levelId: Int, groupId: Int, rowId: Int, id: Int, count: Int) -> [Model] {
-        return (id..<(id + count)).enumerated().map {
-            return .init(levelId: levelId, groupId: groupId, rowId: rowId, id: $1)
+    private func makeSourceAt(id: Int, levelId: Int, foreignIds: Set<Int>, count: Int) -> [Model] {
+        (id..<(id + count)).enumerated().map {
+            .init(id: $1 + 10, levelId: levelId, foreignIds: foreignIds)
         }
     }
     
@@ -51,29 +37,29 @@ final class TreeViewPresenter {
             appliedSource.count > indexPath.row else { return }
         
         let selectedAppliedSource = appliedSource[indexPath.row]
-        let selectedLevelId = selectedAppliedSource.levelId
-        let selectedGroupId = selectedAppliedSource.groupId
         let selectedId = selectedAppliedSource.id
+        let selectedLevelId = selectedAppliedSource.levelId
+        var selectedForeignIds = selectedAppliedSource.foreignIds
         
         if !appliedSource.filter({
-            $0.levelId == selectedLevelId &&
-            $0.groupId > selectedGroupId &&
-            ($0.groupId - selectedGroupId > 1 ? $0.rowId >= selectedId : $0.rowId == selectedId)
+            $0.levelId > selectedLevelId &&
+            $0.foreignIds.contains(selectedId) &&
+            $0.foreignIds.intersection(selectedForeignIds).count == selectedLevelId
         }).isEmpty {
             appliedSource.removeAll {
-                $0.levelId == selectedLevelId &&
-                $0.groupId > selectedGroupId &&
-                ($0.groupId - selectedGroupId > 1 ? $0.rowId >= selectedId : $0.rowId == selectedId)
+                $0.levelId > selectedLevelId &&
+                $0.foreignIds.contains(selectedId) &&
+                $0.foreignIds.intersection(selectedForeignIds).count == selectedLevelId
             }
         } else {
+            selectedForeignIds.insert(selectedId)
             appliedSource.insert(
-                contentsOf: makeModelsAt(
-                    levelId: selectedLevelId,
-                    groupId: selectedGroupId + 1,
-                    rowId: selectedId,
+                contentsOf: makeSourceAt(
                     id: selectedId + 1,
-                    count: 3),
-                at: indexPath.row + 1
+                    levelId: selectedLevelId + 1,
+                    foreignIds: selectedForeignIds,
+                    count: 3
+                ), at: indexPath.row + 1
             )
         }
     }
@@ -87,12 +73,22 @@ extension TreeViewPresenter: TreeViewControllerProtocol {
 
 extension TreeViewPresenter {
     struct Model {
-        let levelId: Int
-        let groupId: Int
-        let rowId: Int
         let id: Int
+        let levelId: Int
+        var foreignIds: Set<Int> = []
+        
         var title: String {
-            "levelId: \(levelId) groupId: \(groupId), rowId: \(rowId) id: \(id)"
+            "id: \(id), levelId: \(levelId), foreignIds: \(foreignIds.map { "\($0)" }.joined(separator: ", "))"
         }
+    }
+}
+
+extension TreeViewPresenter.Model: Hashable {
+    static func == (lhs: TreeViewPresenter.Model, rhs: TreeViewPresenter.Model) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

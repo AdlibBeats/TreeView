@@ -45,7 +45,7 @@ final class TreeViewController: UIViewController {
         
         var model: TreeViewPresenter.Model? {
             willSet {
-                labelLeadingConstraint.constant = CGFloat((newValue?.groupId ?? 1) * 20)
+                labelLeadingConstraint.constant = CGFloat((newValue?.levelId ?? 1) * 20)
                 label.text = newValue?.title
                 // MARK: disable animation
                 //UIView.animate(withDuration: 0.3) { [weak self] in
