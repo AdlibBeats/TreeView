@@ -7,21 +7,17 @@
 //
 
 import UIKit
+import Swinject
 import Then
-import RxGesture
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        
-        let bounds = UIScreen.main.bounds
-        self.window = UIWindow(frame: bounds)
-        self.window?.rootViewController = UINavigationController(rootViewController: TreeViewController())
-        self.window?.makeKeyAndVisible()
+        window = .init(frame: UIScreen.main.bounds)
+        window?.rootViewController = try? Container.shared.resolve(module: .treeView)
+        window?.makeKeyAndVisible()
         
         return true
     }

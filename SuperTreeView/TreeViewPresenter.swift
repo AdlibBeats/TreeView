@@ -30,6 +30,12 @@ final class TreeViewPresenter {
             .init(id: $1 + 10, levelId: levelId, foreignIds: foreignIds)
         }
     }
+}
+
+extension TreeViewPresenter: TreeViewControllerProtocol {
+    func viewDidLoad() {
+        delegate?.sourceDidUpdate(appliedSource)
+    }
     
     func select(_ indexPath: IndexPath) {
         guard
@@ -62,12 +68,6 @@ final class TreeViewPresenter {
                 ), at: indexPath.row + 1
             )
         }
-    }
-}
-
-extension TreeViewPresenter: TreeViewControllerProtocol {
-    func viewDidLoad() {
-        delegate?.sourceDidUpdate(appliedSource)
     }
 }
 

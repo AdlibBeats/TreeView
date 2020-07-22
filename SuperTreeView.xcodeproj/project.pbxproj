@@ -11,6 +11,7 @@
 		491CC6A524BE52C4005245CC /* TreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491CC6A424BE52C4005245CC /* TreeViewController.swift */; };
 		491CC6AA24BE52C6005245CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491CC6A924BE52C6005245CC /* Assets.xcassets */; };
 		491CC6AD24BE52C6005245CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 491CC6AB24BE52C6005245CC /* LaunchScreen.storyboard */; };
+		4997C35324C86CE6003F0EAC /* DI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4997C35224C86CE6003F0EAC /* DI.swift */; };
 		49CF30AC24BF1E9900BD5298 /* TreeViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF30AB24BF1E9900BD5298 /* TreeViewPresenter.swift */; };
 		4C660ADB11E30E53E21D5215 /* Pods_SuperTreeView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A7911B0096059F3570C466 /* Pods_SuperTreeView.framework */; };
 /* End PBXBuildFile section */
@@ -23,6 +24,7 @@
 		491CC6A924BE52C6005245CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		491CC6AC24BE52C6005245CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		491CC6AE24BE52C6005245CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4997C35224C86CE6003F0EAC /* DI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DI.swift; sourceTree = "<group>"; };
 		49CF30AB24BF1E9900BD5298 /* TreeViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewPresenter.swift; sourceTree = "<group>"; };
 		B6A7911B0096059F3570C466 /* Pods_SuperTreeView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SuperTreeView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B88393876E8DB4F624D365D6 /* Pods-SuperTreeView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperTreeView.debug.xcconfig"; path = "Target Support Files/Pods-SuperTreeView/Pods-SuperTreeView.debug.xcconfig"; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				491CC6A924BE52C6005245CC /* Assets.xcassets */,
 				491CC6AB24BE52C6005245CC /* LaunchScreen.storyboard */,
 				491CC6AE24BE52C6005245CC /* Info.plist */,
+				4997C35224C86CE6003F0EAC /* DI.swift */,
 			);
 			path = SuperTreeView;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4997C35324C86CE6003F0EAC /* DI.swift in Sources */,
 				491CC6A524BE52C4005245CC /* TreeViewController.swift in Sources */,
 				49CF30AC24BF1E9900BD5298 /* TreeViewPresenter.swift in Sources */,
 				491CC6A124BE52C4005245CC /* AppDelegate.swift in Sources */,

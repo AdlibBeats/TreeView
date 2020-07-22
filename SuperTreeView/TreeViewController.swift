@@ -10,6 +10,7 @@ import UIKit
 
 protocol TreeViewControllerProtocol: class {
     func viewDidLoad()
+    func select(_ indexPath: IndexPath)
 }
 
 final class TreeViewController: UIViewController {
@@ -31,7 +32,8 @@ final class TreeViewController: UIViewController {
             contentView.addSubview(label)
             [
                 labelLeadingConstraint,
-                label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+                label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
                 label.trailingAnchor.constraint(
                     lessThanOrEqualTo: contentView.trailingAnchor,
                     constant: -20
@@ -47,10 +49,6 @@ final class TreeViewController: UIViewController {
             willSet {
                 labelLeadingConstraint.constant = CGFloat((newValue?.levelId ?? 1) * 20)
                 label.text = newValue?.title
-                // MARK: disable animation
-                //UIView.animate(withDuration: 0.3) { [weak self] in
-                // self?.layoutIfNeeded()
-                //}
             }
         }
     }
@@ -66,13 +64,10 @@ final class TreeViewController: UIViewController {
         $0.register(TreeViewCell.self, forCellReuseIdentifier: "\(TreeViewCell.self)")
     }
     
-    private weak var delegate: TreeViewControllerProtocol?
-    private lazy var presenter = TreeViewPresenter(delegate: self)
+    var delegate: TreeViewControllerProtocol?
     
     private var source: [TreeViewPresenter.Model] = [] {
         didSet {
-            // MARK: disable animation
-            //tableView.reloadSections([0], with: .fade)
             UIView.performWithoutAnimation {
                 tableView.reloadData()
             }
@@ -100,14 +95,13 @@ final class TreeViewController: UIViewController {
         
         setConstraints()
         
-        delegate = presenter
         delegate?.viewDidLoad()
     }
 }
 
 extension TreeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.select(indexPath)
+        delegate?.select(indexPath)
     }
 }
 
