@@ -37,7 +37,7 @@ extension TreeViewPresenter: TreeViewControllerProtocol {
         delegate?.sourceDidUpdate(appliedSource)
     }
     
-    func select(_ indexPath: IndexPath) {
+    func tableViewDidSelect(rowAt indexPath: IndexPath) {
         guard
             indexPath.row >= 0 &&
             appliedSource.count > indexPath.row else { return }

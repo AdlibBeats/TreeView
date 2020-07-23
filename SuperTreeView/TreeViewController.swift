@@ -10,7 +10,7 @@ import UIKit
 
 protocol TreeViewControllerProtocol: class {
     func viewDidLoad()
-    func select(_ indexPath: IndexPath)
+    func tableViewDidSelect(rowAt indexPath: IndexPath)
 }
 
 final class TreeViewController: UIViewController {
@@ -101,7 +101,7 @@ final class TreeViewController: UIViewController {
 
 extension TreeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.select(indexPath)
+        delegate?.tableViewDidSelect(rowAt: indexPath)
     }
 }
 
