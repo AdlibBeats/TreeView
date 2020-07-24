@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxAdlibBeats
 
 protocol TreeViewControllerProtocol: class {
     func viewDidLoad()
@@ -96,6 +97,8 @@ final class TreeViewController: UIViewController {
         setConstraints()
         
         delegate?.viewDidLoad()
+        
+        RxAdlibBeats.shared.printTitle()
     }
 }
 
