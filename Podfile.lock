@@ -1,6 +1,7 @@
 PODS:
   - Align (1.2.1)
   - Differentiator (4.0.1)
+  - RxAdlibBeats (0.1.0)
   - RxBinding (0.4):
     - RxCocoa (< 6.0.0, >= 5.0.0)
     - RxSwift (< 6.0.0, >= 5.0.0)
@@ -34,6 +35,7 @@ PODS:
 
 DEPENDENCIES:
   - Align (= 1.2.1)
+  - RxAdlibBeats (= 0.1.0)
   - RxBinding
   - RxCocoa
   - RxDataSources
@@ -50,6 +52,7 @@ SPEC REPOS:
   trunk:
     - Align
     - Differentiator
+    - RxAdlibBeats
     - RxBinding
     - RxCocoa
     - RxDataSources
@@ -67,6 +70,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Align: e52659c1eda1e52aa470e3a69e36ce5fbac7f475
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
+  RxAdlibBeats: ac6fdea7416a31e65380ac86f9a348e60162333f
   RxBinding: da433c012633802a72c2a5bec8775b86f4cddeb8
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
@@ -81,6 +85,6 @@ SPEC CHECKSUMS:
   SwinjectStoryboard: 32512ef16c2b0ff5b8f823b23539c4a50f6d3383
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: 0abe364525f60dfc9caa6fe20772c15776db4f55
+PODFILE CHECKSUM: 83f4d1cc22f39eb527dbc8ddcbd7b1e5ae5dcbf4
 
 COCOAPODS: 1.9.3
