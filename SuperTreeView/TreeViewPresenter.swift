@@ -47,16 +47,14 @@ extension TreeViewPresenter: TreeViewControllerProtocol {
         let selectedLevelId = selectedAppliedSource.levelId
         var selectedForeignIds = selectedAppliedSource.foreignIds
         
-        if !appliedSource.filter({
+        let sublevel: (Model) -> Bool = {
             $0.levelId > selectedLevelId &&
             $0.foreignIds.contains(selectedId) &&
             $0.foreignIds.intersection(selectedForeignIds).count == selectedLevelId
-        }).isEmpty {
-            appliedSource.removeAll {
-                $0.levelId > selectedLevelId &&
-                $0.foreignIds.contains(selectedId) &&
-                $0.foreignIds.intersection(selectedForeignIds).count == selectedLevelId
-            }
+        }
+        
+        if !appliedSource.filter(sublevel).isEmpty {
+            appliedSource.removeAll(where: sublevel)
         } else {
             selectedForeignIds.insert(selectedId)
             appliedSource.insert(
