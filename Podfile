@@ -15,7 +15,6 @@ target 'SuperTreeView' do
   pod 'RxFeedback'
   pod 'RxGesture'
   pod 'RxUIAlert'
-  pod 'RxAdlibBeats'
   
   pod 'Then'
   pod 'Align', '1.2.1'

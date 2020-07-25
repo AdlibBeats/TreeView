@@ -19,15 +19,15 @@ final class TreeViewPresenter {
         self.delegate = delegate
     }
     
-    private var appliedSource: [Model] = (0..<5).enumerated().map({ .init(id: $1 + 11, levelId: 1, foreignIds: [0]) }) {
+    private var appliedSource: [Model] = (0..<5).map({ _ in .init(levelId: 1, foreignIds: [UUID()]) }) {
         didSet {
             delegate?.sourceDidUpdate(appliedSource)
         }
     }
     
-    private func makeSourceAt(id: Int, levelId: Int, foreignIds: Set<Int>, count: Int) -> [Model] {
-        (id..<(id + count)).enumerated().map {
-            .init(id: $1 + 10, levelId: levelId, foreignIds: foreignIds)
+    private func makeSourceAt(levelId: Int, foreignIds: Set<UUID>, count: Int = 3) -> [Model] {
+        (0..<count).map { _ in
+            .init(levelId: levelId, foreignIds: foreignIds)
         }
     }
 }
@@ -60,35 +60,33 @@ extension TreeViewPresenter: TreeViewControllerProtocol {
         } else {
             selectedForeignIds.insert(selectedId)
             appliedSource.insert(
-                contentsOf: makeSourceAt(
-                    id: selectedId + 1,
-                    levelId: selectedLevelId + 1,
-                    foreignIds: selectedForeignIds,
-                    count: 3
-                ), at: indexPath.row + 1
+                contentsOf: makeSourceAt(levelId: selectedLevelId + 1, foreignIds: selectedForeignIds),
+                at: indexPath.row + 1
             )
         }
     }
 }
 
 extension TreeViewPresenter {
-    struct Model {
-        let id: Int
+    struct Model: Identifiable {
+        let id = UUID()
         let levelId: Int
-        var foreignIds: Set<Int> = []
+        var foreignIds: Set<UUID> = []
+        
+        var idString: String {
+            "id: \(id.uuidString.prefix(2))..."
+        }
+        
+        var levelIdString: String {
+            "levelId: \(levelId)"
+        }
+        
+        var foreignIdsString: String {
+            "foreignIds: \(foreignIds.map { "\($0.uuidString.prefix(2))" }.joined(separator: ", "))"
+        }
         
         var title: String {
-            "id: \(id), levelId: \(levelId), foreignIds: \(foreignIds.map { "\($0)" }.joined(separator: ", "))"
+            [idString, levelIdString, foreignIdsString].joined(separator: ", ")
         }
-    }
-}
-
-extension TreeViewPresenter.Model: Hashable {
-    static func == (lhs: TreeViewPresenter.Model, rhs: TreeViewPresenter.Model) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
     }
 }
